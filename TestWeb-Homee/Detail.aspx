@@ -25,17 +25,14 @@
          
           try {
               map.entities.clear();
-              var locs = [];
               var location;
               for (var i = 0; i < pinLatitude.length; i++) {
                   location = new Microsoft.Maps.Location(pinLatitude[i], pinLogitude[i]);
-                  locs.push(location);
                   var pushpin = new Microsoft.Maps.Pushpin(location,{ draggable: false });
                   pushpin.setOptions({ visible: true });
                   map.entities.push(pushpin);
 
               }
-              map.setView({bounds:bounds, padding: 100});
           }
           catch (err) {
               alert(err)
