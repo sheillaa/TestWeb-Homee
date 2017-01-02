@@ -91,7 +91,7 @@
             </tr>
             <tr>
                 <td>Alamat</td>
-                <td><asp:TextBox ID="alamat" runat="server"></asp:TextBox></td>
+                <td><asp:TextBox ID="alamat" runat="server" onchange="javascript: changeMapByAddress(this.value);" ></asp:TextBox></td>
             </tr>
             <tr>
                 <td>Latitude/Longitude</td>
