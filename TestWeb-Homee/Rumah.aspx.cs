@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using MySql.Data.MySqlClient;
 using System.Configuration;
+using System.Web.Script.Serialization;
 
 namespace TestWeb_Homee
 {
@@ -13,11 +14,27 @@ namespace TestWeb_Homee
     {
         #region MySqlConnection Connection and Page Lode
         MySqlConnection conn = new MySqlConnection(ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString);
+        #endregion
+
+        protected string[] kota;
+
+        public static class JavaScript
+        {
+            public static string Serialize(object o)
+            {
+                JavaScriptSerializer js = new JavaScriptSerializer();
+                return js.Serialize(o);
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            kota = new string[10] { "Ambon", "Bandung", "Bogor","Bekasi", "Cianjur", "Denpasar", "Garut","Jayapura","Kupang","Liwa"};
+            tipe.Items.Add("36");
+            tipe.Items.Add("45");
+            tipe.Items.Add("72");
         }
-        #endregion
+        
         #region Insert Rumah
         /// <summary>
         /// SHEILLA : Add New rumah Action
@@ -30,13 +47,14 @@ namespace TestWeb_Homee
             {
                 conn.Open();
                 MySqlCommand cmd = new MySqlCommand("INSERT INTO rumah (tipe,alamat,longitude,latitude ) VALUES (@Tipe, @Alamat, @Longitude, @Latitude)", conn);
-                cmd.Parameters.AddWithValue("@Tipe", tipe.Text);
+                cmd.Parameters.AddWithValue("@Tipe", tipe.SelectedValue);
                 cmd.Parameters.AddWithValue("@Alamat", alamat.Text);
                 cmd.Parameters.AddWithValue("@Longitude", longitude.Text);
                 cmd.Parameters.AddWithValue("@Latitude", latitude.Text);
                 cmd.ExecuteNonQuery();
                 cmd.Dispose();
-                ShowMessage("Registered successfully......!");
+                ShowMessage("Data berhasil disimpan !");
+                clear();
             }
             catch (MySqlException ex)
             {
@@ -56,7 +74,17 @@ namespace TestWeb_Homee
         /// <param name="msg"></param>
         void ShowMessage(string msg)
         {
-            ClientScript.RegisterStartupScript(Page.GetType(), "validation", "<script language = 'javascript' > alert('" + msg + "');</ script > ");
+            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('"+ msg +"')", true);
+        }
+        #endregion
+
+        #region clear method
+        void clear()
+        {
+            tipe.SelectedIndex = 0;
+            alamat.Text = string.Empty;
+            longitude.Text = string.Empty;
+            latitude.Text = string.Empty;
         }
         #endregion
     }

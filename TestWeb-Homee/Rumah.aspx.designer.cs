@@ -28,7 +28,7 @@ namespace TestWeb_Homee {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tipe;
+        protected global::System.Web.UI.WebControls.DropDownList tipe;
         
         /// <summary>
         /// alamat control.
