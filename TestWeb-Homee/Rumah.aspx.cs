@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using MySql.Data.MySqlClient;
 using System.Configuration;
 using System.Web.Script.Serialization;
+using System.Data;
 
 namespace TestWeb_Homee
 {
@@ -33,6 +34,18 @@ namespace TestWeb_Homee
             tipe.Items.Add("36");
             tipe.Items.Add("45");
             tipe.Items.Add("72");
+            try
+            {
+                if (!Page.IsPostBack)
+                {
+                    BindGrid();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowMessage(ex.Message);
+            }
         }
         
         #region Insert Rumah
@@ -55,6 +68,7 @@ namespace TestWeb_Homee
                 cmd.Dispose();
                 ShowMessage("Data berhasil disimpan !");
                 clear();
+                BindGrid();
             }
             catch (MySqlException ex)
             {
@@ -66,7 +80,37 @@ namespace TestWeb_Homee
             }
         }
         #endregion
-        
+
+        #region bind data to GridListRumah
+        private void BindGrid()
+        {
+            try
+            {
+                if (conn.State == ConnectionState.Closed)
+                {
+                    conn.Open();
+                }
+                MySqlCommand cmd = new MySqlCommand("SELECT * FROM rumah ORDER BY id ASC;",
+conn);
+                MySqlDataAdapter adp = new MySqlDataAdapter(cmd);
+                DataSet ds = new DataSet();
+                adp.Fill(ds);
+                GridListRumah.DataSource = ds;
+                GridListRumah.DataBind();
+            }
+            catch (MySqlException ex)
+            {
+                ShowMessage(ex.Message);
+            }
+            finally
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+        }
+        #endregion
         #region show message
         /// <summary>
         /// This function is used for show message.

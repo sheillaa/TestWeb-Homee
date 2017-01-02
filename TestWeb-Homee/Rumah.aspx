@@ -4,26 +4,29 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title></title><link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="/resources/demos/style.css">
-  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <script>
-  $( function() {
-      var kota = <%=JavaScript.Serialize(this.kota) %>;
-    $("#alamat" ).autocomplete({
-        source: kota,
-        select: function (a, b) {
-            changeMapByAddress(b.item.value);
-        }
-    });
-  } );
-  </script>
+    <title></title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <!-- BING MAPS Control -->
     <script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=6.3"></script>
 
-      <script type="text/javascript">
+    <script>
+      $( function() {
+          var kota = <%=JavaScript.Serialize(this.kota) %>;
+        $("#alamat" ).autocomplete({
+            source: kota,
+            select: function (a, b) {
+                changeMapByAddress(b.item.value);
+            }
+        });
+      } );
+    </script>
 
-          var myMap = null;         
+    <script type="text/javascript">
+        var myMap = null;         
 
          function LoadMap()
          {
@@ -37,7 +40,7 @@
                  myMap.Dispose();
              }
          }
-          function StartGeocoding( address )
+         function StartGeocoding( address )
           {
               myMap.Find(null,    // what
                          address, // where
@@ -79,28 +82,53 @@
               StartGeocoding(address);
           }
       </script>
+    <style>
+        table tr td{
+            padding:5px;
+        }
+    </style>
 </head>
 <body onload="LoadMap()" onunload="UnloadMap()">
     <form id="form1" runat="server">
-    <div>
-        <table>
-            <tr>
-                <td>Tipe</td>
-                <td><asp:DropDownList ID="tipe" runat="server">
-                    </asp:DropDownList></td>
-            </tr>
-            <tr>
-                <td>Alamat</td>
-                <td><asp:TextBox ID="alamat" runat="server" onchange="javascript: changeMapByAddress(this.value);" ></asp:TextBox></td>
-            </tr>
-            <tr>
-                <td>Latitude/Longitude</td>
-                <td><asp:TextBox ID="latitude" runat="server"></asp:TextBox>/<asp:TextBox ID="longitude" runat="server"></asp:TextBox> &nbsp;<asp:Button ID="btnSubmit" runat="server" Text="Simpan" OnClick="btnSave_Click" /></td>
-            </tr>
-            <tr>
-                <td colspan="2"><div style="position:relative;width:400px;height:400px;" id="mapDiv"></div></td>
-            </tr>
-        </table>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="text-center">Form Input Data Rumah</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        
+                        <table>
+                            <tr>
+                                <td>Tipe</td>
+                                <td><asp:DropDownList ID="tipe" runat="server" Width="50">
+                                    </asp:DropDownList></td>
+                            </tr>
+                            <tr>
+                                <td>Alamat</td>
+                                <td><asp:TextBox ID="alamat" runat="server" onchange="javascript: changeMapByAddress(this.value);" ></asp:TextBox></td>
+                            </tr>
+                            <tr>
+                                <td>Latitude/Longitude</td>
+                                <td><asp:TextBox ID="latitude" runat="server"></asp:TextBox>
+                                    &nbsp;/&nbsp;
+                                    <asp:TextBox ID="longitude" runat="server"></asp:TextBox> 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2"><asp:Button ID="btnSubmit" runat="server" Text="Simpan" OnClick="btnSave_Click"  class="btn btn-primary"/>
+                                    <a href="/Detail.aspx"><i class="glyphicon glyphicon-map-marker"></i>&nbsp;Lihat Lokasi Rumah</a>
+                                </td>
+                            </tr>
+                        </table>
+                        
+                        <asp:GridView ID="GridListRumah" runat="server" DataKeyNames="id" class="table table-striped">
+                        </asp:GridView>
+                    </div>
+                    <div class="col-md-6"><div style="position:relative;width:400px;height:400px;" id="mapDiv"></div></div>
+                </div>
+            
+            </div>
+        </div>
     </div>
     </form>
 </body>

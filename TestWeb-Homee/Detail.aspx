@@ -6,7 +6,7 @@
 <head runat="server">
     <title></title>
     <script type="text/javascript" src="http://ecn.dev.virtualearth.net/mapcontrol/mapcontrol.ashx?v=7.0"></script>
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <script type="text/javascript">
 
         var map = null;
@@ -43,6 +43,14 @@
 
 </head>
 <body onload="GetMap();">
-    <div id='mapDiv' style="position:relative; width:600px; height:600px;"></div> 
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3 class="text-center"><i class="glyphicon glyphicon-map-marker"></i>&nbsp;Peta Lokasi-Lokasi Rumah</h3>
+                <a href="/Rumah.aspx"><i class="glyphicon glyphicon-home"></i>&nbsp;Kembali</a>
+                <div id='mapDiv' style="position:relative; width:100%; height:600px;"></div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
